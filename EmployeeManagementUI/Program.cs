@@ -1,8 +1,19 @@
+using EmployeeManagementUI;
+
 var builder = WebApplication.CreateBuilder(args);
+
+// Configuration
+builder.Configuration.AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
-builder.Services.AddHttpClient();
+
+// Add HttpClient with BaseAddress from appsettings.json
+builder.Services.AddHttpClient("EmployeeAPI", client =>
+{
+    var apiSettings = builder.Configuration.GetSection("ApiSettings").Get<ApiSettings>();
+    client.BaseAddress = new Uri(apiSettings.BaseUrl);
+});
 
 var app = builder.Build();
 

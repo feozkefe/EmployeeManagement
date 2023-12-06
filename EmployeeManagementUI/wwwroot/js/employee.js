@@ -51,6 +51,12 @@ $(document).ready(function () {
             return;
         }
 
+        var isValidAge = validateAge(employee['birthDate']);
+        if (!isValidAge) {
+            alert('Yasiniz 18 yasindan kucuk olmamalidir.');
+            return;
+        }
+
         var employeeJSON = JSON.stringify(employee);
 
         $.ajax({
@@ -59,6 +65,10 @@ $(document).ready(function () {
             data: employeeJSON,
             contentType: 'application/json',
         });
+
+        $('#addEmployeeModal').modal('hide');
+        location.href = location.href;
+
     });
 
     $('.edit').on('click', function () {
@@ -79,7 +89,7 @@ $(document).ready(function () {
         $('[data-employee-edit="birthDate"]').val(birthDate);
         $('[data-employee-edit="phoneNumber"]').val(phoneNumber);
 
-        $('#editEmployeeModal').modal('show');
+        //$('#editEmployeeModal').modal('show');
     });
 
     $('#editEmployee').click(function () {
@@ -122,6 +132,12 @@ $(document).ready(function () {
             return;
         }
 
+        var isValidAge = validateAge(employee['birthDate']);
+        if (!isValidAge) {
+            alert('Yasiniz 18 yasindan kucuk olmamalidir.');
+            return;
+        }
+
         var employeeJSON = JSON.stringify(employee);
         var employeeId = employee['employeeId'];
 
@@ -133,7 +149,6 @@ $(document).ready(function () {
                 employeeJson: employeeJSON
             }
         });
-
     });
 });
 
@@ -152,5 +167,22 @@ function validateEmployeeData(employee) {
         alert('Lütfen tüm alanlarý doldurun!');
         return false;
     }
+    return true;
+}
+
+function validateAge(birthDate) {
+    var today = new Date();
+    var birth = new Date(birthDate);
+    var age = today.getFullYear() - birth.getFullYear();
+    var month = today.getMonth() - birth.getMonth();
+
+    if (month < 0 || (month === 0 && today.getDate() < birth.getDate())) {
+        age--;
+    }
+
+    if (age < 18) {
+        return false;
+    }
+
     return true;
 }

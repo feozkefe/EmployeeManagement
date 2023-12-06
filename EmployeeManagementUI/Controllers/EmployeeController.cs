@@ -15,9 +15,8 @@ namespace EmployeeManagementWeb.Controllers
 
 		public EmployeeController(IHttpClientFactory httpClientFactory)
 		{
-            _httpClient = httpClientFactory.CreateClient();
-            _httpClient.BaseAddress = new Uri("https://localhost:7262/"); 
-        }
+			_httpClient = httpClientFactory.CreateClient("EmployeeAPI");
+		}
 
 		public async Task<IActionResult> Index()
 		{
